@@ -29,7 +29,7 @@ exports.createLesson = async (req, res) => {
 
 exports.getLessons = async (req, res) => {
   try {
-    const lessons = await Lesson.find().populate("vocabularyCount");
+    const lessons = await Lesson.find().populate("vocabularyCount").sort({ updatedAt: -1 });
     const response = lessons.map(({ _id, name, number, updatedAt, vocabularyCount }) => ({
       _id,
       name,
