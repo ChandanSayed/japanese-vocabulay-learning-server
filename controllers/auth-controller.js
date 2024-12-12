@@ -63,6 +63,22 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.loginWithToken = async (req, res) => {
+  try {
+    res.status(200).json({
+      message: "Token validated",
+      user: {
+        email: req.user.email,
+        name: req.user.name,
+        image: req.user.email,
+        userType: req.user.userType,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.logout = (req, res) => {
   try {
     res.status(200).json({ message: "Logged out successfully" });
