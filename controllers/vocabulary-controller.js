@@ -57,3 +57,21 @@ exports.deleteVocabulary = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getVocabularyByLesson = async (req, res) => {
+  const { lessonNo } = req.params;
+
+  try {
+    const vocabularies = await Vocabulary.find({ lessonNo }).select(
+      "word pronunciation meaning whenToSay updatedAt"
+    );
+
+    if (!vocabularies.length) {
+      return res.status(404).json({ message: "No vocabulary found for this lesson." });
+    }
+
+    res.status(200).json(vocabularies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
