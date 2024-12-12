@@ -29,12 +29,13 @@ exports.createLesson = async (req, res) => {
 
 exports.getLessons = async (req, res) => {
   try {
-    const lessons = await Lesson.find();
-    const response = lessons.map(({ _id, name, number, updatedAt }) => ({
+    const lessons = await Lesson.find().populate("vocabularyCount");
+    const response = lessons.map(({ _id, name, number, updatedAt, vocabularyCount }) => ({
       _id,
       name,
       number,
       updatedAt,
+      vocabularyCount,
     }));
     res.status(200).json(response);
   } catch (error) {

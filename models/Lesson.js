@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("./Vocabulary");
 const lessonSchema = new mongoose.Schema(
   {
     name: {
@@ -17,7 +18,14 @@ const lessonSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
-
+lessonSchema.virtual("vocabularyCount", {
+  ref: "Vocabulary",
+  localField: "_id",
+  foreignField: "lessonNo",
+  count: true,
+});
 module.exports = mongoose.model("Lesson", lessonSchema);

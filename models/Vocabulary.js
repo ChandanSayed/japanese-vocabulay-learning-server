@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const vocabularySchema = new mongoose.Schema(
   {
     word: {
@@ -18,8 +19,9 @@ const vocabularySchema = new mongoose.Schema(
       required: true,
     },
     lessonNo: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Lesson",
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
