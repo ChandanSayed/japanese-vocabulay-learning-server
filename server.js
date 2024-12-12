@@ -6,6 +6,8 @@ const cors = require("cors");
 // import files
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth-routes");
+const lessonRoutes = require("./routes/lesson-route");
+const { protect } = require("./middleware/auth-middleware");
 
 const app = express();
 
@@ -21,5 +23,6 @@ app.get("/", (req, res) => {
 connectDB();
 
 app.use("/auth", authRoutes);
+app.use("/api", protect, lessonRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
