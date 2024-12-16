@@ -24,7 +24,7 @@ const lessonSchema = new mongoose.Schema(
 );
 lessonSchema.virtual("vocabularyCount", {
   ref: "Vocabulary",
-  localField: "_id",
+  localField: "number",
   foreignField: "lessonNo",
   count: true,
 });

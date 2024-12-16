@@ -19,7 +19,7 @@ const vocabularySchema = new mongoose.Schema(
       required: true,
     },
     lessonNo: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Number,
       required: true,
       ref: "Lesson",
     },
