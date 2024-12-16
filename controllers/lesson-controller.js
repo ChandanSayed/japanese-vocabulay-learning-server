@@ -43,10 +43,34 @@ exports.getLessons = async (req, res) => {
   }
 };
 
+exports.getLesson = async (req, res) => {
+  try {
+    const lesson = await Lesson.findOne({ _id: req.params.id })
+      .populate("vocabularyCount")
+      .sort({ updatedAt: -1 });
+
+    if (!lesson) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
+    const { _id, name, number, updatedAt, vocabularyCount } = lesson;
+    const response = {
+      _id,
+      name,
+      number,
+      updatedAt,
+      vocabularyCount,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.updateLesson = async (req, res) => {
   try {
     const { id } = req.params;
-    const lesson = await Lesson.findOneAndUpdate({ _id: id, creator: req.user._id }, req.body, {
+    const lesson = await Lesson.findOneAndUpdate({ _id: id }, req.body, {
       new: true,
     });
     if (!lesson) return res.status(404).json({ message: "Lesson not found or unauthorized" });
