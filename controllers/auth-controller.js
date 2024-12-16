@@ -6,8 +6,6 @@ require("dotenv").config();
 exports.register = async (req, res) => {
   const { email, password, confirmPassword, image, name } = req.body;
 
-  console.log(req.body);
-
   if (password !== confirmPassword) {
     return res.status(400).send("Passwords do not match");
   }
@@ -43,7 +41,6 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    console.log(user);
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -70,7 +67,7 @@ exports.loginWithToken = async (req, res) => {
       user: {
         email: req.user.email,
         name: req.user.name,
-        image: req.user.email,
+        image: req.user.image,
         userType: req.user.userType,
       },
     });
@@ -84,5 +81,42 @@ exports.logout = (req, res) => {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password");
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.updatedUser = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const updates = req.body;
+
+    if (updates.password) {
+      return res.status(400).json({ error: "Password cannot be updated through this route." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user" });
   }
 };
