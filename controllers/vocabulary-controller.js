@@ -1,11 +1,11 @@
 const Vocabulary = require("../models/Vocabulary");
 
 exports.createVocabulary = async (req, res) => {
-  const { word, pronunciation, meaning, whenToSay, lessonNo } = req.body;
+  const { words, pronunciation, meaning, whenToSay, lessonNo } = req.body;
 
   try {
     const newVocabulary = new Vocabulary({
-      word,
+      words,
       pronunciation,
       meaning,
       whenToSay,

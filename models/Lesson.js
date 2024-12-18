@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 require("./Vocabulary");
+
+const validator = require("validator");
+
 const lessonSchema = new mongoose.Schema(
   {
     name: {
@@ -11,9 +14,13 @@ const lessonSchema = new mongoose.Schema(
       required: true,
     },
     creator: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "User",
+      validate: {
+        validator: v => validator.isEmail(v),
+        message: props => `${props.value} is not a valid email address!`,
+      },
     },
   },
   {

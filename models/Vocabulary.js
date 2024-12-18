@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 
+const validator = require("validator");
+
 const vocabularySchema = new mongoose.Schema(
   {
-    word: {
+    words: {
       type: String,
       required: true,
     },
@@ -24,9 +26,13 @@ const vocabularySchema = new mongoose.Schema(
       ref: "Lesson",
     },
     creator: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "User",
+      validate: {
+        validator: v => validator.isEmail(v),
+        message: props => `${props.value} is not a valid email address!`,
+      },
     },
   },
   { timestamps: true }

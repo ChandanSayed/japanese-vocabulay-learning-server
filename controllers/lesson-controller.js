@@ -14,7 +14,7 @@ exports.createLesson = async (req, res) => {
     const newLesson = new Lesson({
       name,
       number,
-      creator: userId,
+      creator: req.user.email,
     });
 
     await newLesson.save();
@@ -39,7 +39,7 @@ exports.getLessons = async (req, res) => {
     }));
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error);
   }
 };
 
@@ -63,7 +63,7 @@ exports.getLesson = async (req, res) => {
 
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error);
   }
 };
 
@@ -79,7 +79,7 @@ exports.updateLesson = async (req, res) => {
 
     res.status(200).json({ _id, name: lessonName, number: lessonNumber, updatedAt });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).send(error);
   }
 };
 
@@ -91,6 +91,6 @@ exports.deleteLesson = async (req, res) => {
 
     res.status(200).json({ message: "Lesson deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error);
   }
 };
