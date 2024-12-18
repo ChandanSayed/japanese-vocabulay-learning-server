@@ -32,6 +32,30 @@ exports.getVocabularies = async (req, res) => {
   }
 };
 
+exports.getVocabulary = async (req, res) => {
+  try {
+    const vocabulary = await Vocabulary.findOne({ _id: req.params.id });
+
+    if (!vocabulary) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
+    const { _id, words, pronunciation, meaning, whenToSay, lessonNo, creator } = vocabulary;
+    const response = {
+      _id,
+      words,
+      pronunciation,
+      meaning,
+      whenToSay,
+      lessonNo,
+      creator,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 exports.UpdateVocabulary = async (req, res) => {
   try {
     const { id } = req.params;
